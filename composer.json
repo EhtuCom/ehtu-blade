@@ -1,0 +1,20 @@
+{
+    "name": "ehtu/ehtu-blade",
+    "description": "Tools for Laravel frontend",
+    "type": "library",
+    "license": "MIT",
+
+    "authors": [
+        {
+            "name": "David Lyons - ehtu.com",
+            "email": "davidlyonsgarcia@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Ehtu\\EhtuBlade\\" : "src/"
+        }
+    }
+}
