@@ -1,10 +1,10 @@
 <?php
 
-namespace Ehtu\LaravelBladeHelpers\Controllers;
+namespace Ehtu\EhtuBlade\Controllers;
 
 use Illuminate\Http\Request;
 
-class LaravelBladeHelperController extends \App\Http\Controllers\Controller
+class EhtuBladeController extends \App\Http\Controllers\Controller
 {
     //
     public function Index()
