@@ -11,6 +11,7 @@
     <H1>Test laravel blade helper</H1>
 
     <form action="{{ route('testlaravelhelper') }}" method="post">
+        <x-EhtuBlade::input.text   />
         <input type="text" name="name" placeholder="Your name please">
         <input type="text" name="email" placeholder="Your email please">
         <textarea name="message" cols="50" rows="10" placeholder="Your message"></textarea>

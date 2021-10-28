@@ -3,4 +3,6 @@
 ])
 
 <input type="text" {{ $attributes }} class='form-control'>
-<x-jetstream::input-error for="{{ $errorTarget }}"/>
+
+<x-EhtuBlade::input.input-error for="{{ $errorTarget }}" />
+{{--<x-jetstream::input-error for="{{ $errorTarget }}"/>--}}
