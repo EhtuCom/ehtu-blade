@@ -2,15 +2,17 @@
 namespace Ehtu\EhtuBlade\Libs\LiveWire\Tables;
 
 
+use Ehtu\EhtuBlade\Libs\CRUD\SearchField;
+
 class EhtuLiveWireTableColumn
 {
     public function __construct(
 
         public string $name = '',
 
-        public string $type = 'dbField', // dbField, actions, dbFieldComposed, calculus
+        public string $type = EhtuLiveWireTableColumnType::dbField, // dbField, actions, dbFieldComposed, calculus
 
-        // enum : dbField, dbFieldComposed, actions, calculus
+        // enum: dbField, dbFieldComposed, actions, calculus
 
         public ?string $displayName = null,
         public bool $isKey = false,
@@ -25,7 +27,11 @@ class EhtuLiveWireTableColumn
 
         public string $cssTDHeaderClass = '',
         public string $cssTDClass = '',
-        public string $cssHideByScreenSizeLowerThan = ''
+        public string $cssHideByScreenSizeLowerThan = '',
+        public bool $isHidden = false,
+        public bool $isSortedDefault = false,
+        public string $idSortedDefaultOrder = 'desc',
+        public ?SearchField $searchField = null,
     )
     {  }
 
@@ -68,4 +74,29 @@ class EhtuLiveWireTableColumns
         $this->columns[] = $column;
         return $this;
     }
+
+    public function getDefaultOrder()
+    {
+        $defaultOrder = null;
+        foreach ($this->columns as $column) {
+            if ($column->isSortedDefault) {
+                $defaultOrder = $column->name;
+                break;
+            }
+        }
+        return $defaultOrder;
+    }
+
+    public function getDefaultOrderDirection()
+    {
+        $defaultOrderDirection = null;
+        foreach ($this->columns as $column) {
+            if ($column->isSortedDefault) {
+                $defaultOrderDirection = $column->idSortedDefaultOrder;
+                break;
+            }
+        }
+        return $defaultOrderDirection;
+    }
+
 }

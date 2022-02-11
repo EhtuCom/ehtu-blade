@@ -6,7 +6,10 @@
 @foreach($ehtuTable->columns as $column)
     @switch($column->type)
         @case('dbField')
+            <?php
 
+
+            ?>
             <th wire:click="sortBy('{{ $column->name }}')">{{ ucwords($column->displayName ?? $column->name) }}</th>
             @break
         @case('actions')
@@ -14,3 +17,6 @@
             @break
     @endswitch
 @endforeach
+@if($ehtuTable->actionsShowColumn)
+    <th>{{ __( $ehtuTable->actionsColumnDisplayName) }}</th>
+@endif

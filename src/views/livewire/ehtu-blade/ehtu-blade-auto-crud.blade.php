@@ -12,13 +12,13 @@
         <div class="col">
             <table class="table table-hover">
                 <thead>
-                <tr>
-                    @include('EhtuBlade::components.ehtuLWCrud.eLWCVisibleColumnsHeaders')
+                    <tr>
+                        @include('EhtuBlade::components.ehtuLWCrud.eLWCVisibleColumnsHeaders')
+                    </tr>
+                    <tr>
+                        @include('EhtuBlade::components.ehtuLWCrud.eLVCVisibleColumnsHeadersSearch')
+                    </tr>
 
-                </tr>
-                <tr>
-                    @include('EhtuBlade::components.ehtuLWCrud.eLVCVisibleColumnsHeadersSearch')
-                </tr>
                 </thead>
                 <tbody>
                 @foreach($rows as $row)
@@ -33,59 +33,54 @@
     <div>
         @include('EhtuBlade::components.ehtuLWCrud.eLWCBottomPaginationResults')
     </div>
+    <div>
+        <span class="p-2">{!! $debug !!}</span><br>
+        <span class="p-2">id comanda: {!! $comanda->nom !!}</span>
+        <input type="text" wire:model="comanda.nom" name="nom" class='form-control'>
+        <input type="text" wire:model.lazy="debug">
+    </div>
+    <!--  MODAL  -->
+    <div>
+        <x-EhtuBlade::modals.edit title="Edició de la variació de preu">
+            <div class="row">
+                <div class="col-12">
+                    <x-EhtuBlade::input.group label="Nom" for="name">
+                        <div >comanda: {{ $comanda->nom }}</div>
+                        <input type="text" wire:model="comanda.nom" name="nom" class='form-control'>
+                        <x-EhtuBlade::input.text wire:model="comanda.nom" name="nom" errorTarget="comanda.nom"/>
+                        {{--                        <x-input.text wire:model.lazy="preuVariacio.nom" name="nom" errorTarget="preuVariacio.nom"/>--}}
+                    </x-EhtuBlade::input.group>
+                </div>
+            </div>
 
-{{--    <!--  MODAL  -->--}}
-{{--    <div>--}}
-{{--        <x-modals.edit title="Edició de la variació de preu">--}}
-{{--            <div class="row">--}}
-{{--                <div class="col-12">--}}
-{{--                    <x-input.group label="Nom" for="name">--}}
-{{--                        <x-EhtuBlade::input.text wire:model.lazy="preuVariacio.nom" name="nom" errorTarget="preuVariacio.nom"/>--}}
-{{--                        --}}{{--                        <x-input.text wire:model.lazy="preuVariacio.nom" name="nom" errorTarget="preuVariacio.nom"/>--}}
-{{--                    </x-input.group>--}}
-{{--                </div>--}}
+            <x-slot name="modalFooter">
+                <x-EhtuBlade::modals.notify-saved/>
 
-{{--                <div class="col-12">--}}
-{{--                    <x-input.group label="Tipus" for="tipus">--}}
+                <button type="button" class="btn btn-sm btn-secondary" wire:click="modalClose()">{{ _('Close')}}</button>
+                <button type="button" class="btn btn-sm btn-primary" wire:click="save()">{{ _('Save') }}</button>
+            </x-slot>
+        </x-EhtuBlade::modals.edit>
+    </div>
+    <!--  MODAL  ...END-->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // this.livewire.on('askdelete', idPreuVariacio => {
+            //     bootbox.confirm("Esteus segurs de voler eliminar el registre?", (result) => {
+            //         if (result) {
+            //             this.livewire.emit('delete', idPreuVariacio)
+            //         }
+            //     });
+            // });
+            this.livewire.on('modalOpen', () => {
+                    $('#staticBackdrop').modal('show');
+                }
+            );
+            this.livewire.on('modalClose', () => {
+                    $('#staticBackdrop').modal('hide');
+                }
+            );
+        });
+    </script>
 
-{{--                        <x-EhtuBlade::input.select wire:model.lazy="preuVariacio.tipus" name="tipus" :keyValues="$preuVariacio::PREU_VARIACIONS_TIPUS" errorTarget="preuVariacio.tipus" />--}}
-{{--                    </x-input.group>--}}
-{{--                </div>--}}
-
-{{--                <div class="col-12">--}}
-{{--                    <x-input.group label="Zona" for="zona">--}}
-{{--                        <x-EhtuBlade::input.select wire:model.lazy="preuVariacio.zona" name="zona" :keyValues="$preuVariacio::PREU_VARIACIONS_ZONES" errorTarget="preuVariacio.zona" />--}}
-
-{{--                    </x-input.group>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-
-{{--            <x-slot name="modalFooter">--}}
-{{--                <x-modals.notify-saved />--}}
-{{--                <button type="button" class="btn btn-sm btn-secondary" wire:click="modalClose()">{{ _('Close')}}</button>--}}
-{{--                <button type="button" class="btn btn-sm btn-primary" wire:click="save()">{{ _('Save') }}</button>--}}
-{{--            </x-slot>--}}
-{{--        </x-modals.edit>--}}
-{{--    </div>--}}
-{{--    <!--  MODAL  ...END-->--}}
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // this.livewire.on('askdelete', idPreuVariacio => {
-        //     bootbox.confirm("Esteus segurs de voler eliminar el registre?", (result) => {
-        //         if (result) {
-        //             this.livewire.emit('delete', idPreuVariacio)
-        //         }
-        //     });
-        // });
-        this.livewire.on('modalOpen', () => {
-                $('#staticBackdrop').modal('show');
-            }
-        );
-        this.livewire.on('modalClose', () => {
-                $('#staticBackdrop').modal('hide');
-            }
-        );
-    });
-</script>

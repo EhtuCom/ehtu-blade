@@ -1,6 +1,16 @@
 @props(
     [
-        'targetField' => ''
+        'column' => '',
     ]
 )
-<td><input type="text" wire:model.debounce.300ms="search.{{ $targetField }}" placeholder="{{ $targetField }}" class="form-control"></td>
+<?
+/* @var $column Ehtu\EhtuBlade\Libs\LiveWire\Tables\EhtuLiveWireTableColumn */
+?>
+<td>
+    <input
+        type="text"
+        wire:model.debounce.700ms="search.{{ $column->name }}"
+        placeholder="{{ $column->displayName }}"
+        class="form-control"
+    >
+</td>

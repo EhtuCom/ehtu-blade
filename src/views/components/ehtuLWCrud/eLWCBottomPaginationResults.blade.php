@@ -1,6 +1,6 @@
 <div class="flex flex-row space-x-5 p-3 align-items-center justify-between">
 
-    <span>Total de resultats: {{ $rows->total() }}</span>
+    <span>&Sigma; {{ $rows->total() }}</span>
 
     <span>{{ $rows->links() }}</span>
 

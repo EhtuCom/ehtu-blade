@@ -1,22 +1,22 @@
 <?php
 namespace Ehtu\EhtuBlade\Traits;
 
-use Ehtu\EhtuBlade\Libs\LiveWire\Tables;
+//use Ehtu\EhtuBlade\Libs\LiveWire\Tables;
 use Carbon\Carbon;
 use Ehtu\EhtuBlade\Libs\LiveWire\Tables\EhtuLiveWireTable;
-use Illuminate\Database\Eloquent\Builder; // necessary??
+use Illuminate\Database\Eloquent\Builder;
+use function PHPUnit\Framework\isEmpty;
 
-trait LivewirePaginationTrait
+// necessary??
+
+trait EhtuCRUDTrait
 {
+
     public $columns = [];
     private EhtuLiveWireTable $ehtuTable;
     public string $modelName;
     public $tableTitle = "Edit";
-    //
-    //public $ehtuLWCrudTargetObjectName = '';
-    //public $ehtuLWCrudTargetObjectsName = '';
-    //public $ehtuLWCrudVisibleColumns = [];
-    //public $ehtuLWCrudColumnsHeaderNames = [];
+
     public $totalRows = 0;
 
 
@@ -28,9 +28,9 @@ trait LivewirePaginationTrait
 
     public int $paginationCount = 10;
     public array $paginationPossibleCounts = [5, 10, 25, 50, 100];
-    public $sortField = "nom";
-    public $sortOrder = "asc";
 
+    public string $sortField = '';
+    public string $sortDirection = '';
 
     // BASIC FILTERS:
     public $searchDefault = [];
@@ -44,13 +44,24 @@ trait LivewirePaginationTrait
 
     protected $paginationTheme = 'bootstrap';
 
+    public bool $ehtuCrudLoaded = false;
+
+
+
+
+    public function getListeners()
+    {
+        return $this->listeners + ['closeEdit', 'delete', 'edit'];
+    }
+
     /*******************************************************************/
     /** SEARCH PAGINATE...  */
 
-    public function sortBy($field)
+    public function sortBy($sortField)
     {
-        $this->sortField = $field;
-        $this->sortOrder = ($this->sortOrder == "asc") ? "desc" : "asc";
+        $this->sortField = $sortField;
+        $this->sortDirection = ($this->sortDirection == "asc") ? "desc" : "asc";
+
     }
 
     public function updatedSearch()
@@ -79,6 +90,7 @@ trait LivewirePaginationTrait
     {
         foreach ($this->search as $searchItem => $searchItemValue)
         {
+            // Todo - add more search types
             $targetSearched = ($this->search[$searchItem]) ? $targetSearched->where($searchItem, 'like', '%' . $searchItemValue . '%') : $targetSearched;
         }
 //        $users = ($this->search['name']) ? $users->where('name', 'like', '%' . $this->search['name'] . '%') : $users;
@@ -90,8 +102,31 @@ trait LivewirePaginationTrait
 
     private function applyOrderBy($targetSorted)
     {
-        return $targetSorted->orderBy($this->sortField, $this->sortOrder);
+        //$this->addDebug('key??: ' . $this->ehtuTable->getPrimaryKeyName());
+        $this->sortDefaults();
+        return $targetSorted->orderBy($this->sortField, $this->sortDirection);
     }
+
+    private function sortDefaults()
+    {
+        if(empty($this->sortField))
+        {
+            if(empty($this->ehtuTable->sortField))
+            {
+                $this->sortField = $this->ehtuTable->getPrimaryKeyName();
+            } else
+            {
+                $this->sortField = $this->ehtuTable->sortField;
+            }
+        }
+
+        if(empty($this->sortDirection))
+        {
+            $this->sortDirection = $this->ehtuTable->sortDirection ?? 'desc';
+        }
+    }
+
+
     /** SEARCH PAGINATE END  */
     /*******************************************************************/
 
@@ -100,7 +135,6 @@ trait LivewirePaginationTrait
 
     public function create()
     {
-
         $this->modalOpen();
     }
 
@@ -126,31 +160,42 @@ trait LivewirePaginationTrait
 
     public function render()
     {
-        if(! isset($this->ehtuTable)) $this->setupEhtuTable();
-        //$dbQuery = PreuVariacio::query();
+        if(!isset($this->ehtuTable)) $this->setupEhtuTable();
+
         $dbQuery = call_user_func($this->ehtuTable->classModelName . '::query');
-        //dd($this->ehtuTable->getSelectFields());
+
         $dbQuery->select($this->ehtuTable->getSelectFields());
+
         $dbQuery = $this->applySearch($dbQuery);
         $dbQuery = $this->applyOrderBy($dbQuery);
 
         $this->totalRows  = $dbQuery->count();
+
+        $rows = $dbQuery->paginate($this->paginationCount);
+
         //dd($dbQuery->toSql());
         //$this->eLWCResults = $dbQuery->paginate($this->paginationCount);
+        $this->addDebug('query...');
         return view('EhtuBlade::livewire.ehtu-blade.ehtu-blade-auto-crud',
             [
                 'ehtuTable' => $this->ehtuTable,
-                'rows'     => $dbQuery->paginate($this->paginationCount),
+                'rows'     => $rows,
                 'totalRows' => $this->totalRows,
             ]
         );
-
-        //eLWCResults
     }
 
-    private function getViewName()
+    // Search eloquent model fields
+    public function modelGetColumnsAndTypes()
     {
-        // default view name: livewire.ehtu-blade.ehtu-blade-auto-crud
+        $model = new $this->ehtuTable->classModelName;
+        $columns = $model->getConnection()->getSchemaBuilder()->getColumnListing($model->getTable());
+        $columnsAndTypes = [];
+        foreach ($columns as $column)
+        {
+            $columnsAndTypes[$column] = $model->getConnection()->getDoctrineColumn($model->getTable(), $column)->getType()->getName();
+        }
+        return $columnsAndTypes;
     }
 
     private function formDateRangeSplitDates()
@@ -160,5 +205,16 @@ trait LivewirePaginationTrait
         list($from, $to) = explode(' - ', $this->dateRange, );
         $this->dateFrom = Carbon::createFromFormat('Y-m-d', $from)->startOfDay();
         $this->dateTo = Carbon::createFromFormat('Y-m-d', $to)->endOfDay();
+    }
+
+    // Debug stuff
+    public string $debug = '';
+
+    public function addDebug($msg)
+    {
+        // Check if in laravel debug mode
+        if (config('app.debug')) {
+            $this->debug .= $msg . '❤️';
+        }
     }
 }
