@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div wire:ignore.self  class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div wire:ignore.self  class="modal fade" id="EhtuModalEditor" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog mw-100 w-75">
         <div class="modal-content">
             <div class="modal-header">

@@ -26,8 +26,8 @@ trait EhtuCRUDTrait
     //public $eLWCResults = [];
 
 
-    public int $paginationCount = 10;
-    public array $paginationPossibleCounts = [5, 10, 25, 50, 100];
+    public int $paginationCount = 25;
+    public array $paginationPossibleCounts = [10, 25, 50, 100];
 
     public string $sortField = '';
     public string $sortDirection = '';
@@ -165,27 +165,22 @@ trait EhtuCRUDTrait
         $dbQuery = call_user_func($this->ehtuTable->classModelName . '::query');
 
         $dbQuery->select($this->ehtuTable->getSelectFields());
-
+        $dbQuery->with('distribuidora');
         $dbQuery = $this->applySearch($dbQuery);
         $dbQuery = $this->applyOrderBy($dbQuery);
 
-        $this->totalRows  = $dbQuery->count();
-
         $rows = $dbQuery->paginate($this->paginationCount);
 
-        //dd($dbQuery->toSql());
-        //$this->eLWCResults = $dbQuery->paginate($this->paginationCount);
-        $this->addDebug('query...');
         return view('EhtuBlade::livewire.ehtu-blade.ehtu-blade-auto-crud',
             [
                 'ehtuTable' => $this->ehtuTable,
                 'rows'     => $rows,
-                'totalRows' => $this->totalRows,
             ]
         );
     }
 
     // Search eloquent model fields
+
     public function modelGetColumnsAndTypes()
     {
         $model = new $this->ehtuTable->classModelName;

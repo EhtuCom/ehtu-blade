@@ -70,6 +70,9 @@ class EhtuLiveWireTable
             if($column->type == 'dbField')
             {
                 array_push($arRes, $column->name);
+            } else
+            {
+                array_push($arRes, $column->name);
             }
         }
         return $arRes;
@@ -82,18 +85,45 @@ class EhtuLiveWireTable
         return $model->getKeyName();
     }
 
+    public function sayHello()
+    {
+        return 'Hello';
+    }
+
 }
 
 // class enum search types
 class EhtuLiveWireTableColumnType
 {
     const dbField = 'dbField';
+    const int = 'int';
+    const uuid = 'uuid';
     const text = 'text';
     const date = 'date';
+
     const datetime = 'datetime';
+    const time = 'time';
+    const number = 'number';
+    const boolean = 'boolean';
     const select = 'select';
     const checkbox = 'checkbox';
+
     const action = 'action';
 }
 
+//enum EhtuLiveWireTableColumnType : string
+//{
+//    int,
+//    uuid,
+//    dbField,
+//    text,
+//    date,
+//    datetime,
+//    time,
+//    number,
+//    boolean,
+//    select,
+//    checkbox,
+//    action
+//}
 

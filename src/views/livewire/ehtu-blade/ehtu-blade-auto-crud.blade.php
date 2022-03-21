@@ -56,8 +56,10 @@
             <x-slot name="modalFooter">
                 <x-EhtuBlade::modals.notify-saved/>
 
-                <button type="button" class="btn btn-sm btn-secondary" wire:click="modalClose()">{{ _('Close')}}</button>
-                <button type="button" class="btn btn-sm btn-primary" wire:click="save()">{{ _('Save') }}</button>
+                <span class="btn-group">
+                    <button type="button" class="btn btn-secondary" wire:click="modalClose()">{{ _('Close')}}</button>
+                    <button type="button" class="btn btn-primary" wire:click="save()">{{ _('Save') }}</button>
+                </span>
             </x-slot>
         </x-EhtuBlade::modals.edit>
     </div>
@@ -72,15 +74,15 @@
             //     });
             // });
             this.livewire.on('modalOpen', () => {
-                    $('#staticBackdrop').modal('show');
+                    $('#EhtuModalEditor').modal('show');
                 }
             );
             this.livewire.on('modalClose', () => {
-                    $('#staticBackdrop').modal('hide');
+                    $('#EhtuModalEditor').modal('hide');
                 }
             );
         });
     </script>
 
 </div>
-
+j

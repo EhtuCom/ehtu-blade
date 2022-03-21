@@ -13,10 +13,10 @@
             <th wire:click="sortBy('{{ $column->name }}')">{{ ucwords($column->displayName ?? $column->name) }}</th>
             @break
         @case('actions')
-            <th>{{ $column->displayName ??  __('Actions') }}</th>
+            <th class="text-right">{{ $column->displayName ??  __('Actions') }}</th>
             @break
     @endswitch
 @endforeach
 @if($ehtuTable->actionsShowColumn)
-    <th>{{ __( $ehtuTable->actionsColumnDisplayName) }}</th>
+    <th class="text-right">{{ __( $ehtuTable->actionsColumnDisplayName) }}</th>
 @endif

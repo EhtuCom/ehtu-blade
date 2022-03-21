@@ -10,8 +10,8 @@
     @elseif($column->type == 'actions')
         <td class="text-right">
             <span class="btn-group">
-                <button class="btn btn-warning btn-sm" wire:click="clearAll()"><i class="bi bi-arrow-clockwise"></i></button>
-                <button class="btn btn-success btn-sm" wire:click="create()"><i class="bi bi-plus"></i></button>
+                <button class="btn btn-warning btn-sm" wire:click="clearAll()" title="{{ __('Reset search') }}"><i class="bi bi-arrow-clockwise"></i></button>
+                <button class="btn btn-success btn-sm" wire:click="create()" title="{{ __('Add new') }}"><i class="bi bi-plus"></i></button>
             </span>
         </td>
     @else
@@ -21,8 +21,8 @@
 @if($ehtuTable->actionsShowColumn)
     <td class="text-right">
         <span class="btn-group">
-            <button class="btn btn-warning btn-sm" wire:click="clearAll()"><i class="bi bi-arrow-clockwise"></i></button>
-            <button class="btn btn-success btn-sm" wire:click="create()"><i class="bi bi-plus"></i></button>
+            <button class="btn btn-warning btn-sm" wire:click="clearAll()"  title="{{ __('Reset search') }}"><i class="bi bi-arrow-clockwise"></i></button>
+            <button class="btn btn-success btn-sm" wire:click="create()"  title="{{ __('Add new') }}"><i class="bi bi-plus"></i></button>
         </span>
     </td>
 @endif
