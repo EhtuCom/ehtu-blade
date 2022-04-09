@@ -18,14 +18,24 @@
                     <tr>
                         @include('EhtuBlade::components.ehtuLWCrud.eLVCVisibleColumnsHeadersSearch')
                     </tr>
-
                 </thead>
                 <tbody>
-                @foreach($rows as $row)
+                @if(count($rows) > 0)
+                    @foreach($rows as $row)
+                        <tr>
+                            @include('EhtuBlade::components.ehtuLWCrud.eLWCVisilbleColumns')
+                        </tr>
+                    @endforeach
+                @else
                     <tr>
-                        @include('EhtuBlade::components.ehtuLWCrud.eLWCVisilbleColumns')
+                        <td colspan="{{ $visibleColumnsCount }}">
+                            <div class="alert alert-info">
+                                {{ __('There is no data to show.') }}
+                            </div>
+                        </td>
                     </tr>
-                @endforeach
+                @endif
+
                 </tbody>
             </table>
         </div>

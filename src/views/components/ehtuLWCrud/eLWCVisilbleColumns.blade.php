@@ -2,49 +2,34 @@
 /* @var $ehtuTable \App\Libs\Ehtu\EhtuLiveWireTable */
 /* @var $column \App\Libs\Ehtu\EhtuLiveWireTableColumn */
 ?>
-{{ $ehtuTable->sayHello() }}
 
 @foreach($ehtuTable->columns as $column)
-    @switch($column->type)
-        @case('dbField')
-        @case('string')
+    @if(!$column->hidden)
+        <td class="">
             <?php
                 $fieldName = $column->name;
+                $relationName = $column->relationName;
+                $fieldValue = $column->isRelation == false ? $row->$fieldName : $row->$relationName->$fieldName;
             ?>
-            <td>
-                {{ $row->distribuidora->nom }}
-                {{ $row->$fieldName }} xx
-            </td>
-        @break
-        @case('dbFieldWithLink')
-            <?php
-                $fieldName = $column->name;
-            ?>
-            <td>
-                <a href="{{ $row->$fieldName }}">{{ $row->$fieldName }}</a>
-            </td>
-        @break
-        @case('date')
-            <?php
-                $fieldName = $column->name;
-            ?>
-            <td>{{ $row->$fieldName->format('d.m.Y') }}</td>
-        @break
-        @case('dateTime')
-            <?php
-                $fieldName = $column->name;
-            ?>
-            <td>{{ $row->$fieldName->format('d.m.Y H:i:s') }}</td>
-        @break
-        @case('select')
-            <?php
-                $fieldName = $column->name;
-            ?>
-            <td>
-                {{ $row->$fieldName->name }}
-            </td>
-
-    @endswitch
+            @switch($column->type)
+                @case('dbField')
+                @case('string')
+                    {{ $fieldValue }}
+                @break
+                @case('dbFieldWithLink')
+                    <a href="{{ $fieldValue }}">{{ $fieldValue }}</a>
+                @break
+                @case('date')
+                    {{ $fieldValue->format('d.m.Y') }}
+                @break
+                @case('dateTime')
+                    {{ $fieldValue->format('d.m.Y H:i:s') }}
+                @break
+                @case('select')
+                    {{ $fieldValue }}
+            @endswitch
+        </td>
+    @endif
 @endforeach
 {{-- ACTIONS!! --}}
 @if($ehtuTable->actionsShowColumn)

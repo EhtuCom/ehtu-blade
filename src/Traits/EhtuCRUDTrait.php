@@ -47,6 +47,9 @@ trait EhtuCRUDTrait
     public bool $ehtuCrudLoaded = false;
 
 
+    public int $visibleColumnsCount = 0;
+
+
 
 
     public function getListeners()
@@ -170,6 +173,7 @@ trait EhtuCRUDTrait
         $dbQuery = $this->applyOrderBy($dbQuery);
 
         $rows = $dbQuery->paginate($this->paginationCount);
+        $this->visibleColumnsCount = $this->ehtuTable->getVisibleColumnsCount();
 
         return view('EhtuBlade::livewire.ehtu-blade.ehtu-blade-auto-crud',
             [

@@ -61,6 +61,22 @@ class EhtuLiveWireTable
 
     }
 
+    public function getVisibleColumnsCount()
+    {
+        $count = 0;
+        foreach($this->columns as $column)
+        {
+            if($column->hidden == false)
+            {
+                $count++;
+            }
+            {
+                $count++;
+            }
+        }
+        return $count;
+    }
+
     public function getSelectFields()
     {
         $arRes = [];

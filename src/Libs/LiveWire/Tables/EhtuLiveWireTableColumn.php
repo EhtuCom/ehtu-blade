@@ -18,7 +18,7 @@ class EhtuLiveWireTableColumn
         public bool $isKey = false,
 
 
-        public string $fieldType = 'string', // int, string, bool, date, datetime, bloob, double, decimal, ...
+        public string $fieldType = 'string', // int, string, bool, date, datetime, bloob, double, decimal, AUTO
 
         public array $actionsDefaultEnbled = ['delete', 'edit'],
 
@@ -32,6 +32,26 @@ class EhtuLiveWireTableColumn
         public bool $isSortedDefault = false,
         public string $idSortedDefaultOrder = 'desc',
         public ?SearchField $searchField = null,
+        public bool $isRelation = false,
+
+        public string $relationName = '',
+        public string $relationField = '',
+        public string $relationFieldType = 'onetoone', // onetoone, manytoone, manytomany
+
+        public bool $isCalculus = false,
+        public string $calculusType = 'sum', // sum, count, avg, max, min
+
+        public bool $hidden = false,
+
+        public string $cssStyle = '',
+        public string $cssClass = '',
+        public string $cssClassTD = '',
+        public string $cssClassTDHeader = '',
+        public string $cssClassTDHeaderSorted = '',
+        public string $cssClassTDHeaderSortedDefault = '',
+        public string $cssClassTDHeaderSortedDefaultAsc = '',
+
+        public string $cssWidth = '',
     )
     {  }
 
